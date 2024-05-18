@@ -28,14 +28,9 @@ export class Procedure<
     return newProcedure
   }
 
-  fn<TNewOutput>(
-    execFunction: (context: { input: TInput; deps: TDeps }) => TNewOutput
-  ): Procedure<TDeps, TInput, TNewOutput> {
-    const newProcedure = new Procedure<TDeps, TInput, TNewOutput>()
-    newProcedure.dependencies = this.dependencies
-    newProcedure.inputFunction = this.inputFunction
-    newProcedure.execFunction = execFunction
-    return newProcedure
+  fn(execFunction: (context: { input: TInput; deps: TDeps }) => TOutput): this {
+    this.execFunction = execFunction
+    return this
   }
 
   run(input: TInput): TOutput {
