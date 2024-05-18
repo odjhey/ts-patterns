@@ -15,11 +15,16 @@ const main = async () => {
       },
       newShipment: ({ orderId }) => {
         return { orderId, shipmentId: '123' }
+        // throw new Error('shipment error')
       },
     })
     .run({ id: '2' })
 
-  console.log('order', order) // Outputs: order { id: '1' }
+  if (order.ok === false) {
+    console.error('error', order.error.message)
+  } else {
+    console.log(order.data)
+  }
 }
 
 main()

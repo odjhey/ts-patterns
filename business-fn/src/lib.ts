@@ -38,11 +38,21 @@ export class Procedure<
     return newProcedure
   }
 
-  run(input: TInput): TOutput {
+  run(
+    input: TInput
+  ): { ok: true; data: TOutput } | { ok: false; error: Error } {
     if (!this.dependencies || !this.execFunction || !this.inputFunction) {
       throw new Error('Dependencies, input, or execution function not defined.')
     }
-    const processedInput = this.inputFunction(input)
-    return this.execFunction({ input: processedInput, deps: this.dependencies })
+    try {
+      const processedInput = this.inputFunction(input)
+      const result = this.execFunction({
+        input: processedInput,
+        deps: this.dependencies,
+      })
+      return { ok: true, data: result }
+    } catch (error) {
+      return { ok: false, error }
+    }
   }
 }
