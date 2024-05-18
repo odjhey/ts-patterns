@@ -8,9 +8,9 @@ const PersistentOrder = {
 }
 
 const main = async () => {
-  const order = createOrder
+  const order = await createOrder
     .deps({
-      save: ({ id }) => {
+      save: async ({ id }) => {
         return PersistentOrder.save({ id })
       },
       newShipment: ({ orderId }) => {

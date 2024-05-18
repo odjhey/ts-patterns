@@ -38,15 +38,15 @@ export class Procedure<
     return newProcedure
   }
 
-  run(
+  async run(
     input: TInput
-  ): { ok: true; data: TOutput } | { ok: false; error: Error } {
+  ): Promise<{ ok: true; data: TOutput } | { ok: false; error: Error }> {
     if (!this.dependencies || !this.execFunction || !this.inputFunction) {
       throw new Error('Dependencies, input, or execution function not defined.')
     }
     try {
       const processedInput = this.inputFunction(input)
-      const result = this.execFunction({
+      const result = await this.execFunction({
         input: processedInput,
         deps: this.dependencies,
       })
